@@ -49,7 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const ProfilScreen()),
+                            MaterialPageRoute(builder: (context) => ProfilScreen()),
                           );
                         },
                         icon: const Icon(Icons.person_outline),
@@ -66,7 +66,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Status Card
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -129,7 +128,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Quick Actions
               Row(
                 children: [
                   _buildQuickAction(
@@ -139,7 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const CekScreen()),
+                        MaterialPageRoute(builder: (context) => CekScreen()),
                       );
                     },
                   ),
@@ -156,14 +154,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const LaporScreen()),
+                        MaterialPageRoute(builder: (context) => LaporScreen()),
                       );
                     },
                   ),
                 ],
               ),
               const SizedBox(height: 24),
-              // Warning Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -178,7 +175,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const EdukasiScreen()),
+                        MaterialPageRoute(builder: (context) => EdukasiScreen()),
                       );
                     },
                     child: Text(
@@ -190,7 +187,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ],
               ),
-              // Warning Card 1
               _buildWarningCard(
                 title: 'Waspada: Modus APK Kurir',
                 description: 'Penipu mengirimkan file ekstensi .APK berkedok resi pengiriman...',
@@ -198,12 +194,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AlertDetailScreen()),
+                    MaterialPageRoute(builder: (context) => AlertDetailScreen()),
                   );
                 },
               ),
               const SizedBox(height: 12),
-              // Warning Card 2
               _buildWarningCard(
                 title: 'Penipuan Call Center',
                 description: 'Rasmi media sosial bank dipalsukan untuk mengarahkan keluhan ke...',
@@ -211,7 +206,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const CekScreen()),
+                    MaterialPageRoute(builder: (context) => CekScreen()),
                   );
                 },
               ),
@@ -228,24 +223,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
           });
           switch (index) {
             case 0:
-              // Already on Dashboard
               break;
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const CekScreen()),
+                MaterialPageRoute(builder: (context) => CekScreen()),
               );
               break;
             case 2:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const EdukasiScreen()),
+                MaterialPageRoute(builder: (context) => EdukasiScreen()),
               );
               break;
             case 3:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const ProfilScreen()),
+                MaterialPageRoute(builder: (context) => ProfilScreen()),
               );
               break;
           }

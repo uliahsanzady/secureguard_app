@@ -71,7 +71,7 @@ class AlertDetailScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const TwofaDetailScreen()),
+                        MaterialPageRoute(builder: (context) => TwofaDetailScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(

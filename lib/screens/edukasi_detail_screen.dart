@@ -71,7 +71,6 @@ class EdukasiDetailScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
-            // This would be the article content
             Text(
               'Apa itu 2FA?',
               style: GoogleFonts.poppins(
@@ -223,7 +222,7 @@ class EdukasiDetailScreen extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const EdukasiDetailScreen()),
+          MaterialPageRoute(builder: (context) => EdukasiDetailScreen()),
         );
       },
       child: Container(

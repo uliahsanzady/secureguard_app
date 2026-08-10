@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
+import 'edukasi_detail_screen.dart';
 
 class TwofaDetailScreen extends StatelessWidget {
   const TwofaDetailScreen({super.key});
@@ -228,7 +229,7 @@ class TwofaDetailScreen extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const EdukasiDetailScreen()),
+          MaterialPageRoute(builder: (context) => EdukasiDetailScreen()),
         );
       },
       child: Container(

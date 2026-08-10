@@ -10,7 +10,6 @@ class LaporScreen extends StatefulWidget {
 }
 
 class _LaporScreenState extends State<LaporScreen> {
-  int _currentIndex = 0;
   String? _selectedFraudType;
   String _story = '';
   int _storyLength = 0;
@@ -71,7 +70,6 @@ class _LaporScreenState extends State<LaporScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              // Step 1
               Text(
                 '1. Jenis Penipuan',
                 style: GoogleFonts.poppins(
@@ -111,7 +109,6 @@ class _LaporScreenState extends State<LaporScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              // Step 2
               Text(
                 '2. Detail Pelaku',
                 style: GoogleFonts.poppins(
@@ -164,7 +161,6 @@ class _LaporScreenState extends State<LaporScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              // Step 3
               Text(
                 '3. Ceritakan Kejadian',
                 style: GoogleFonts.poppins(
@@ -200,7 +196,6 @@ class _LaporScreenState extends State<LaporScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              // Step 4
               Text(
                 '4. Bukti Pendukung',
                 style: GoogleFonts.poppins(
@@ -249,7 +244,6 @@ class _LaporScreenState extends State<LaporScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              // Warning
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(

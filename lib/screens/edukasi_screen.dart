@@ -72,12 +72,11 @@ class _EdukasiScreenState extends State<EdukasiScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Latest Modus Section
               GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AlertDetailScreen()),
+                    MaterialPageRoute(builder: (context) => AlertDetailScreen()),
                   );
                 },
                 child: Container(
@@ -143,7 +142,7 @@ class _EdukasiScreenState extends State<EdukasiScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const AlertDetailScreen()),
+                            MaterialPageRoute(builder: (context) => AlertDetailScreen()),
                           );
                         },
                         style: TextButton.styleFrom(
@@ -165,7 +164,6 @@ class _EdukasiScreenState extends State<EdukasiScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Filter Buttons
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -177,7 +175,6 @@ class _EdukasiScreenState extends State<EdukasiScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Recommendations
               Text(
                 'Rekomendasi Untuk Anda',
                 style: GoogleFonts.poppins(
@@ -202,22 +199,21 @@ class _EdukasiScreenState extends State<EdukasiScreen> {
             case 0:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const DashboardScreen()),
+                MaterialPageRoute(builder: (context) => DashboardScreen()),
               );
               break;
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const CekScreen()),
+                MaterialPageRoute(builder: (context) => CekScreen()),
               );
               break;
             case 2:
-              // Already on Edukasi screen
               break;
             case 3:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const ProfilScreen()),
+                MaterialPageRoute(builder: (context) => ProfilScreen()),
               );
               break;
           }
@@ -276,7 +272,7 @@ class _EdukasiScreenState extends State<EdukasiScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const EdukasiDetailScreen(),
+            builder: (context) => EdukasiDetailScreen(),
             settings: RouteSettings(arguments: item),
           ),
         );

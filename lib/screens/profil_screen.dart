@@ -70,7 +70,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
                 ],
               ),
               const SizedBox(height: 24),
-              // Menu Sections
               _buildMenuSection(
                 title: 'AKUN & KEAMANAN',
                 items: [
@@ -99,7 +98,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
                 items: [
                   _buildMenuItem('Pusat Bantuan & FAQ', Icons.help_outline),
                   _buildMenuItem('Tentang SecureGuard', Icons.info_outline),
-                  _buildMenuItem('Keluar', Icons.logout_outlined, isDanger: true, context: context),
+                  _buildMenuItem('Keluar', Icons.logout_outlined, isDanger: true),
                 ],
               ),
               const SizedBox(height: 80),
@@ -117,23 +116,22 @@ class _ProfilScreenState extends State<ProfilScreen> {
             case 0:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const DashboardScreen()),
+                MaterialPageRoute(builder: (context) => DashboardScreen()),
               );
               break;
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const CekScreen()),
+                MaterialPageRoute(builder: (context) => CekScreen()),
               );
               break;
             case 2:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const EdukasiScreen()),
+                MaterialPageRoute(builder: (context) => EdukasiScreen()),
               );
               break;
             case 3:
-              // Already on Profil screen
               break;
           }
         },
@@ -189,7 +187,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
     String? subtitle,
     bool isSecurity = false,
     bool isDanger = false,
-    BuildContext? context,
   }) {
     return ListTile(
       leading: Icon(
@@ -241,7 +238,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
         ],
       ),
       onTap: () {
-        if (isDanger && context != null) {
+        if (isDanger) {
           _showLogoutDialog(context);
         }
       },
@@ -264,7 +261,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
               Navigator.pop(context);
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                MaterialPageRoute(builder: (context) => LoginScreen()),
               );
             },
             child: const Text(

@@ -70,7 +70,6 @@ class _CekScreenState extends State<CekScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Trusted Source Badge
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -98,7 +97,6 @@ class _CekScreenState extends State<CekScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Type Selection
               Row(
                 children: [
                   _buildTypeButton('Nomor'),
@@ -107,7 +105,6 @@ class _CekScreenState extends State<CekScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-              // Search Field
               Container(
                 decoration: BoxDecoration(
                   color: AppColors.greyLight,
@@ -125,7 +122,7 @@ class _CekScreenState extends State<CekScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const CekResultScreen(),
+                              builder: (context) => CekResultScreen(),
                               settings: RouteSettings(arguments: _searchController.text),
                             ),
                           );
@@ -137,7 +134,6 @@ class _CekScreenState extends State<CekScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Check Button
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -147,7 +143,7 @@ class _CekScreenState extends State<CekScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const CekResultScreen(),
+                          builder: (context) => CekResultScreen(),
                           settings: RouteSettings(arguments: _searchController.text),
                         ),
                       );
@@ -170,7 +166,6 @@ class _CekScreenState extends State<CekScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              // History Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -201,7 +196,6 @@ class _CekScreenState extends State<CekScreen> {
               if (_history.isNotEmpty)
                 ..._history.map((item) => _buildHistoryItem(item)),
               const SizedBox(height: 24),
-              // Popular Reports
               Text(
                 'Sedang Populer Dilaporkan',
                 style: GoogleFonts.poppins(
@@ -238,22 +232,21 @@ class _CekScreenState extends State<CekScreen> {
             case 0:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const DashboardScreen()),
+                MaterialPageRoute(builder: (context) => DashboardScreen()),
               );
               break;
             case 1:
-              // Already on Cek screen
               break;
             case 2:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const EdukasiScreen()),
+                MaterialPageRoute(builder: (context) => EdukasiScreen()),
               );
               break;
             case 3:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const ProfilScreen()),
+                MaterialPageRoute(builder: (context) => ProfilScreen()),
               );
               break;
           }
