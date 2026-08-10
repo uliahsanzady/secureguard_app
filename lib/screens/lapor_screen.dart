@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
-import '../widgets/bottom_nav_bar.dart';
 
 class LaporScreen extends StatefulWidget {
   const LaporScreen({super.key});
@@ -225,7 +224,7 @@ class _LaporScreenState extends State<LaporScreen> {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: AppColors.greyMedium,
-                    style: BorderStyle.dashed,
+                    width: 1,
                   ),
                 ),
                 child: Center(
