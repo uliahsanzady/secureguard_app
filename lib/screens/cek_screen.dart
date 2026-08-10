@@ -1,0 +1,385 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../utils/app_colors.dart';
+import '../widgets/bottom_nav_bar.dart';
+import '../models/data_models.dart';
+
+class CekScreen extends StatefulWidget {
+  const CekScreen({super.key});
+
+  @override
+  State<CekScreen> createState() => _CekScreenState();
+}
+
+class _CekScreenState extends State<CekScreen> {
+  int _currentIndex = 1;
+  String _selectedType = 'Nomor';
+  final TextEditingController _searchController = TextEditingController();
+
+  final List<SearchHistory> _history = [
+    SearchHistory(
+      query: '0812 3456 7890',
+      type: 'phone',
+      detail: 'Nomor Telepon • 2 jam yang lalu',
+      timestamp: DateTime.now().subtract(const Duration(hours: 2)),
+    ),
+    SearchHistory(
+      query: '1122334455',
+      type: 'account',
+      detail: 'Rekening BCA • 1 hari yang lalu',
+      timestamp: DateTime.now().subtract(const Duration(days: 1)),
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              Text(
+                'Credibility Check',
+                style: GoogleFonts.poppins(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Cek Kredibilitas',
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: AppColors.greyText,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Pastikan nomor, rekening, atau tautan aman sebelum bertransaksi.',
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  color: AppColors.greyText,
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Trusted Source Badge
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.greyLight,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.verified_outlined,
+                      color: AppColors.success,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Sumber Data Terpercaya: Data terintegrasi secara langsung dengan CekRekening.id & GetContact untuk akurasi maksimal.',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          color: AppColors.greyDark,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              // Type Selection
+              Row(
+                children: [
+                  _buildTypeButton('Nomor'),
+                  _buildTypeButton('Rekening'),
+                  _buildTypeButton('Tautan'),
+                ],
+              ),
+              const SizedBox(height: 16),
+              // Search Field
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.greyLight,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Masukkan nomor telepon (contoh)',
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        if (_searchController.text.isNotEmpty) {
+                          Navigator.pushNamed(
+                            context,
+                            '/cek_result',
+                            arguments: _searchController.text,
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.search, color: AppColors.primary),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Check Button
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_searchController.text.isNotEmpty) {
+                      Navigator.pushNamed(
+                        context,
+                        '/cek_result',
+                        arguments: _searchController.text,
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(
+                    'Cek Sekarang',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // History Section
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Riwayat Pencarian',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _history.clear();
+                      });
+                    },
+                    child: Text(
+                      'Hapus Semua',
+                      style: GoogleFonts.poppins(
+                        color: AppColors.danger,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (_history.isNotEmpty)
+                ..._history.map((item) => _buildHistoryItem(item)),
+              const SizedBox(height: 24),
+              // Popular Reports
+              Text(
+                'Sedang Populer Dilaporkan',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildPopularItem(
+                title: 'PENIPUAN LOKER',
+                number: '0857 9999 8888',
+                reports: '156 laporan minggu ini',
+                color: AppColors.danger,
+              ),
+              const SizedBox(height: 12),
+              _buildPopularItem(
+                title: 'TOKO ONLINE FIKTIF',
+                number: '5544 3322 11',
+                reports: '89 laporan minggu ini',
+                color: AppColors.warning,
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          switch (index) {
+            case 0:
+              Navigator.pushReplacementNamed(context, '/dashboard');
+              break;
+            case 1:
+              Navigator.pushReplacementNamed(context, '/cek');
+              break;
+            case 2:
+              Navigator.pushReplacementNamed(context, '/edukasi');
+              break;
+            case 3:
+              Navigator.pushReplacementNamed(context, '/profil');
+              break;
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildTypeButton(String label) {
+    final isSelected = _selectedType == label;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _selectedType = label;
+          });
+        },
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.primary : AppColors.greyLight,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Center(
+            child: Text(
+              label,
+              style: GoogleFonts.poppins(
+                color: isSelected ? Colors.white : AppColors.greyDark,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                fontSize: 13,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHistoryItem(SearchHistory item) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: AppColors.greyMedium),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            item.type == 'phone' ? Icons.phone : Icons.account_balance,
+            color: AppColors.greyText,
+            size: 20,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.query,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  item.detail,
+                  style: GoogleFonts.poppins(
+                    color: AppColors.greyText,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.more_vert, color: AppColors.greyText),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPopularItem({
+    required String title,
+    required String number,
+    required String reports,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.greyMedium),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.warning_amber_rounded,
+              color: color,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  number,
+                  style: GoogleFonts.poppins(
+                    color: AppColors.greyDark,
+                    fontSize: 13,
+                  ),
+                ),
+                Text(
+                  reports,
+                  style: GoogleFonts.poppins(
+                    color: AppColors.greyText,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
