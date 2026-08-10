@@ -1,19 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import '../utils/app_colors.dart';
-import '../utils/language_provider.dart';
-import '../l10n/app_localizations.dart';
+import '../services/auth_service.dart';
 import 'dashboard_screen.dart';
 import 'signup_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _auth = AuthService();
+  bool _isLoading = false;
+  bool _obscurePassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    bool isLoggedIn = await _auth.isLoggedIn();
+    if (isLoggedIn) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardScreen()),
+      );
+    }
+  }
+
+  Future<void> _handleLogin() async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Silakan isi email dan kata sandi'),
+          backgroundColor: AppColors.warning,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    var result = await _auth.login(email: email, password: password);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (result['success'] == true) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result['message']),
+          backgroundColor: AppColors.success,
+        ),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result['message']),
+          backgroundColor: AppColors.danger,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -23,7 +91,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 40),
               Text(
-                localizations.translate('app_name'),
+                'SecureGuard',
                 style: GoogleFonts.poppins(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -31,7 +99,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                localizations.translate('app_subtitle'),
+                'Digital Fraud Prevention',
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: AppColors.greyText,
@@ -39,7 +107,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               Text(
-                localizations.translate('login_title'),
+                'Masuk ke Akun',
                 style: GoogleFonts.poppins(
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
@@ -48,7 +116,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                localizations.translate('login_subtitle'),
+                'Amankan transaksi finansial Anda',
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: AppColors.greyText,
@@ -56,7 +124,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                localizations.translate('email_phone'),
+                'Email',
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -69,17 +137,20 @@ class LoginScreen extends StatelessWidget {
                   color: AppColors.greyLight,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const TextField(
-                  decoration: InputDecoration(
+                child: TextField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
                     hintText: 'contoh@email.com',
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    prefixIcon: Icon(Icons.email_outlined, color: AppColors.greyText),
                   ),
                 ),
               ),
               const SizedBox(height: 16),
               Text(
-                localizations.translate('password'),
+                'Kata Sandi',
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -92,13 +163,25 @@ class LoginScreen extends StatelessWidget {
                   color: AppColors.greyLight,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const TextField(
-                  obscureText: true,
+                child: TextField(
+                  controller: _passwordController,
+                  obscureText: _obscurePassword,
                   decoration: InputDecoration(
                     hintText: '••••••••',
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    suffixIcon: Icon(Icons.visibility_off),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    prefixIcon: const Icon(Icons.lock_outline, color: AppColors.greyText),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                      icon: Icon(
+                        _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                        color: AppColors.greyText,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -108,7 +191,7 @@ class LoginScreen extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {},
                   child: Text(
-                    localizations.translate('forgot_password'),
+                    'Lupa Kata Sandi?',
                     style: GoogleFonts.poppins(
                       color: AppColors.primary,
                       fontSize: 13,
@@ -121,26 +204,30 @@ class LoginScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => DashboardScreen()),
-                    );
-                  },
+                  onPressed: _isLoading ? null : _handleLogin,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: Text(
-                    localizations.translate('login_button'),
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : Text(
+                          'Masuk ke SecureGuard →',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -150,7 +237,7 @@ class LoginScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      localizations.translate('or_login_with'),
+                      'ATAU MASUK DENGAN',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         color: AppColors.greyText,
@@ -174,7 +261,7 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Center(
                 child: Text(
-                  localizations.translate('biometric'),
+                  'Biometrik',
                   style: GoogleFonts.poppins(
                     fontSize: 13,
                     color: AppColors.greyText,
@@ -186,20 +273,20 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    localizations.translate('no_account'),
+                    'Belum punya akun?',
                     style: GoogleFonts.poppins(
                       color: AppColors.greyText,
                     ),
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SignupScreen()),
                       );
                     },
                     child: Text(
-                      localizations.translate('register'),
+                      'Daftar Sekarang',
                       style: GoogleFonts.poppins(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
@@ -220,7 +307,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      localizations.translate('encryption_active'),
+                      '🔒 Enkripsi End-to-End Aktif',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         color: AppColors.greyText,
@@ -234,5 +321,12 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }

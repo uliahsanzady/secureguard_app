@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
 import '../widgets/bottom_nav_bar.dart';
+import '../services/auth_service.dart';
 import 'dashboard_screen.dart';
 import 'cek_screen.dart';
 import 'edukasi_screen.dart';
@@ -23,13 +24,41 @@ class ProfilScreen extends StatefulWidget {
 
 class _ProfilScreenState extends State<ProfilScreen> {
   int _currentIndex = 3;
+  final AuthService _auth = AuthService();
+  
+  String userName = 'User';
+  String userEmail = '';
+  String userPhone = '';
+  bool _isLoading = true;
 
-  String userName = 'Budi Santoso';
-  String userEmail = 'budi.santoso@email.com';
-  String userPhone = '0812 3456 7890';
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    var user = await _auth.getCurrentUser();
+    setState(() {
+      if (user != null) {
+        userName = user['name'] ?? 'User';
+        userEmail = user['email'] ?? '';
+        userPhone = user['phone'] ?? '';
+      }
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -43,10 +72,13 @@ class _ProfilScreenState extends State<ProfilScreen> {
                   CircleAvatar(
                     radius: 35,
                     backgroundColor: AppColors.primary.withOpacity(0.1),
-                    child: const Icon(
-                      Icons.person,
-                      size: 35,
-                      color: AppColors.primary,
+                    child: Text(
+                      userName.isNotEmpty ? userName[0].toUpperCase() : 'U',
+                      style: GoogleFonts.poppins(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -121,7 +153,11 @@ class _ProfilScreenState extends State<ProfilScreen> {
                             phone: userPhone,
                           ),
                         ),
-                      );
+                      ).then((result) {
+                        if (result != null) {
+                          _loadUserData();
+                        }
+                      });
                     },
                   ),
                   _buildMenuItem(
@@ -367,7 +403,8 @@ class _ProfilScreenState extends State<ProfilScreen> {
             child: const Text('Batal'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
+              await _auth.logout();
               Navigator.pop(context);
               Navigator.pushReplacement(
                 context,

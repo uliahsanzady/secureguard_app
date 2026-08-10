@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
+import '../services/auth_service.dart';
 import 'login_screen.dart';
 import 'dashboard_screen.dart';
 
@@ -24,6 +25,58 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
+  final AuthService _auth = AuthService();
+
+  Future<void> _handleSignUp() async {
+    if (_formKey.currentState!.validate()) {
+      if (!_agreeTerms) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Silakan setujui Syarat & Ketentuan terlebih dahulu'),
+            backgroundColor: AppColors.warning,
+          ),
+        );
+        return;
+      }
+
+      setState(() {
+        _isLoading = true;
+      });
+
+      var result = await _auth.register(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        phone: _phoneController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (result['success'] == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['message']),
+            backgroundColor: AppColors.success,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DashboardScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['message']),
+            backgroundColor: AppColors.danger,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -397,43 +450,6 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       ),
     );
-  }
-
-  void _handleSignUp() {
-    if (_formKey.currentState!.validate()) {
-      if (!_agreeTerms) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Silakan setujui Syarat & Ketentuan terlebih dahulu'),
-            backgroundColor: AppColors.warning,
-          ),
-        );
-        return;
-      }
-
-      setState(() {
-        _isLoading = true;
-      });
-
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() {
-          _isLoading = false;
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('🎉 Pendaftaran berhasil! Selamat datang di SecureGuard'),
-            backgroundColor: AppColors.success,
-            duration: Duration(seconds: 2),
-          ),
-        );
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => DashboardScreen()),
-        );
-      });
-    }
   }
 
   @override
