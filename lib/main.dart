@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/login_screen.dart';
+import 'screens/scanner_pesan_screen.dart';
+
+// Tidak perlu routes karena kita pakai Navigator.push
 
 void main() {
   runApp(const SecureGuardApp());

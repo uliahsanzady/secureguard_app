@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../models/data_models.dart';
+import '../services/api_service.dart';
 import 'dashboard_screen.dart';
 import 'edukasi_screen.dart';
 import 'profil_screen.dart';
@@ -19,21 +20,35 @@ class _CekScreenState extends State<CekScreen> {
   int _currentIndex = 1;
   String _selectedType = 'Nomor';
   final TextEditingController _searchController = TextEditingController();
+  bool _isLoading = false;
+  
+  List<SearchHistory> _history = [];
 
-  final List<SearchHistory> _history = [
-    SearchHistory(
-      query: '0812 3456 7890',
-      type: 'phone',
-      detail: 'Nomor Telepon • 2 jam yang lalu',
-      timestamp: DateTime.now().subtract(const Duration(hours: 2)),
-    ),
-    SearchHistory(
-      query: '1122334455',
-      type: 'account',
-      detail: 'Rekening BCA • 1 hari yang lalu',
-      timestamp: DateTime.now().subtract(const Duration(days: 1)),
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadHistory();
+  }
+
+  Future<void> _loadHistory() async {
+    // TODO: Load from SharedPreferences
+    setState(() {
+      _history = [
+        SearchHistory(
+          query: '0812 3456 7890',
+          type: 'phone',
+          detail: 'Nomor Telepon • 2 jam yang lalu',
+          timestamp: DateTime.now().subtract(const Duration(hours: 2)),
+        ),
+        SearchHistory(
+          query: '1122334455',
+          type: 'account',
+          detail: 'Rekening BCA • 1 hari yang lalu',
+          timestamp: DateTime.now().subtract(const Duration(days: 1)),
+        ),
+      ];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +85,7 @@ class _CekScreenState extends State<CekScreen> {
                 ),
               ),
               const SizedBox(height: 16),
+              // Trusted Source Badge
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -86,7 +102,7 @@ class _CekScreenState extends State<CekScreen> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Sumber Data Terpercaya: Data terintegrasi secara langsung dengan CekRekening.id & GetContact untuk akurasi maksimal.',
+                        'Data terintegrasi dengan CekRekening.id & Google Safe Browsing',
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           color: AppColors.greyDark,
@@ -97,6 +113,7 @@ class _CekScreenState extends State<CekScreen> {
                 ),
               ),
               const SizedBox(height: 20),
+              // Type Selection
               Row(
                 children: [
                   _buildTypeButton('Nomor'),
@@ -105,6 +122,7 @@ class _CekScreenState extends State<CekScreen> {
                 ],
               ),
               const SizedBox(height: 16),
+              // Search Field
               Container(
                 decoration: BoxDecoration(
                   color: AppColors.greyLight,
@@ -112,60 +130,63 @@ class _CekScreenState extends State<CekScreen> {
                 ),
                 child: TextField(
                   controller: _searchController,
+                  enabled: !_isLoading,
                   decoration: InputDecoration(
-                    hintText: 'Masukkan nomor telepon (contoh)',
+                    hintText: _getHintText(),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        if (_searchController.text.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CekResultScreen(),
-                              settings: RouteSettings(arguments: _searchController.text),
+                    suffixIcon: _isLoading
+                        ? const Padding(
+                            padding: EdgeInsets.all(12),
+                            child: SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
                             ),
-                          );
-                        }
-                      },
-                      icon: const Icon(Icons.search, color: AppColors.primary),
-                    ),
+                          )
+                        : IconButton(
+                            onPressed: _handleSearch,
+                            icon: const Icon(Icons.search, color: AppColors.primary),
+                          ),
                   ),
                 ),
               ),
               const SizedBox(height: 16),
+              // Check Button
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (_searchController.text.isNotEmpty) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CekResultScreen(),
-                          settings: RouteSettings(arguments: _searchController.text),
-                        ),
-                      );
-                    }
-                  },
+                  onPressed: _isLoading ? null : _handleSearch,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: Text(
-                    'Cek Sekarang',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : Text(
+                          'Cek Sekarang',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(height: 24),
+              // History Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -196,28 +217,9 @@ class _CekScreenState extends State<CekScreen> {
               if (_history.isNotEmpty)
                 ..._history.map((item) => _buildHistoryItem(item)),
               const SizedBox(height: 24),
-              Text(
-                'Sedang Populer Dilaporkan',
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 12),
-              _buildPopularItem(
-                title: 'PENIPUAN LOKER',
-                number: '0857 9999 8888',
-                reports: '156 laporan minggu ini',
-                color: AppColors.danger,
-              ),
-              const SizedBox(height: 12),
-              _buildPopularItem(
-                title: 'TOKO ONLINE FIKTIF',
-                number: '5544 3322 11',
-                reports: '89 laporan minggu ini',
-                color: AppColors.warning,
-              ),
-              const SizedBox(height: 24),
+              // Popular Reports
+              _buildPopularReports(),
+              const SizedBox(height: 80),
             ],
           ),
         ),
@@ -255,6 +257,19 @@ class _CekScreenState extends State<CekScreen> {
     );
   }
 
+  String _getHintText() {
+    switch (_selectedType) {
+      case 'Nomor':
+        return 'Masukkan nomor telepon (contoh: 0812 3456 7890)';
+      case 'Rekening':
+        return 'Masukkan nomor rekening (contoh: 1234567890)';
+      case 'Tautan':
+        return 'Masukkan tautan (contoh: https://example.com)';
+      default:
+        return 'Masukkan untuk dicek...';
+    }
+  }
+
   Widget _buildTypeButton(String label) {
     final isSelected = _selectedType == label;
     return Expanded(
@@ -286,6 +301,88 @@ class _CekScreenState extends State<CekScreen> {
     );
   }
 
+  Future<void> _handleSearch() async {
+    final query = _searchController.text.trim();
+    if (query.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Silakan masukkan data terlebih dahulu'),
+          backgroundColor: AppColors.warning,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      Map<String, dynamic> result;
+      
+      // Panggil API sesuai jenis yang dipilih
+      switch (_selectedType) {
+        case 'Rekening':
+          result = await ApiService.cekRekening(query);
+          break;
+        case 'Tautan':
+          result = await ApiService.cekTautan(query);
+          break;
+        default:
+          result = await ApiService.cekNomorTelepon(query);
+          break;
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      // Tambahkan ke riwayat
+      setState(() {
+        _history.insert(0, SearchHistory(
+          query: query,
+          type: _selectedType.toLowerCase(),
+          detail: '$_selectedType • ${_getTimeAgo()}',
+          timestamp: DateTime.now(),
+        ));
+      });
+
+      // Navigasi ke hasil
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CekResultScreen(),
+          settings: RouteSettings(
+            arguments: {
+              'query': query,
+              'type': _selectedType,
+              'result': result,
+            },
+          ),
+        ),
+      );
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $e'),
+          backgroundColor: AppColors.danger,
+        ),
+      );
+    }
+  }
+
+  String _getTimeAgo() {
+    final now = DateTime.now();
+    final difference = now.difference(DateTime.now().subtract(const Duration(hours: 1)));
+    if (difference.inMinutes < 1) return 'Baru saja';
+    if (difference.inMinutes < 60) return '${difference.inMinutes} menit yang lalu';
+    if (difference.inHours < 24) return '${difference.inHours} jam yang lalu';
+    return '${difference.inDays} hari yang lalu';
+  }
+
   Widget _buildHistoryItem(SearchHistory item) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
@@ -297,7 +394,9 @@ class _CekScreenState extends State<CekScreen> {
       child: Row(
         children: [
           Icon(
-            item.type == 'phone' ? Icons.phone : Icons.account_balance,
+            item.type == 'phone' ? Icons.phone : 
+            item.type == 'account' ? Icons.account_balance : 
+            Icons.link,
             color: AppColors.greyText,
             size: 20,
           ),
@@ -324,12 +423,72 @@ class _CekScreenState extends State<CekScreen> {
             ),
           ),
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_vert, color: AppColors.greyText),
+            onPressed: () {
+              setState(() {
+                _history.remove(item);
+              });
+            },
+            icon: const Icon(Icons.close, color: AppColors.greyText, size: 18),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildPopularReports() {
+    return FutureBuilder(
+      future: ApiService.getPopularReports(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return Text(
+            'Gagal memuat data populer',
+            style: GoogleFonts.poppins(color: AppColors.danger),
+          );
+        }
+
+        final reports = snapshot.data ?? [];
+        if (reports.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Sedang Populer Dilaporkan',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 12),
+            ...reports.map((report) => _buildPopularItem(
+              title: report['title'] ?? 'Unknown',
+              number: report['number'] ?? 'N/A',
+              reports: '${report['reports'] ?? 0} laporan minggu ini',
+              color: _getColorFromHex(report['color'] ?? '#F44336'),
+            )),
+          ],
+        );
+      },
+    );
+  }
+
+  Color _getColorFromHex(String hexColor) {
+    try {
+      return Color(int.parse(hexColor.replaceAll('#', '0xFF')));
+    } catch (e) {
+      return AppColors.danger;
+    }
   }
 
   Widget _buildPopularItem({
@@ -339,6 +498,7 @@ class _CekScreenState extends State<CekScreen> {
     required Color color,
   }) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
