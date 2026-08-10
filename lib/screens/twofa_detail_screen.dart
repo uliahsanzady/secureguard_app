@@ -166,11 +166,13 @@ class TwofaDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            _buildRelatedArticle(context,
+            _buildRelatedArticle(
+              context,
               'Mengenali Modus Phishing Melalui Email dan SMS',
               '4 min baca',
             ),
-            _buildRelatedArticle(context,
+            _buildRelatedArticle(
+              context,
               'Cara Membuat Kata Sandi yang Kuat dan Mudah Diingat',
               '2 min baca',
             ),
