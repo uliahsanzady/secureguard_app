@@ -202,10 +202,12 @@ class EdukasiDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             _buildRelatedArticle(
+              context,
               'Mengenali Modus Phishing Melalui Email dan SMS',
               '4 min baca',
             ),
             _buildRelatedArticle(
+              context,
               'Cara Membuat Kata Sandi yang Kuat dan Mudah Diingat',
               '2 min baca',
             ),
@@ -216,47 +218,55 @@ class EdukasiDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRelatedArticle(String title, String time) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppColors.greyMedium),
+  Widget _buildRelatedArticle(BuildContext context, String title, String time) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const EdukasiDetailScreen()),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: AppColors.greyMedium),
+          ),
         ),
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.article_outlined,
-            color: AppColors.primary,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  time,
-                  style: GoogleFonts.poppins(
-                    color: AppColors.greyText,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
+        child: Row(
+          children: [
+            const Icon(
+              Icons.article_outlined,
+              color: AppColors.primary,
             ),
-          ),
-          const Icon(
-            Icons.chevron_right,
-            color: AppColors.greyText,
-          ),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    time,
+                    style: GoogleFonts.poppins(
+                      color: AppColors.greyText,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.chevron_right,
+              color: AppColors.greyText,
+            ),
+          ],
+        ),
       ),
     );
   }

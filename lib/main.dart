@@ -34,19 +34,7 @@ class SecureGuardApp extends StatelessWidget {
           centerTitle: true,
         ),
       ),
-      initialRoute: '/login',
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/dashboard': (context) => const DashboardScreen(),
-        '/cek': (context) => const CekScreen(),
-        '/edukasi': (context) => const EdukasiScreen(),
-        '/profil': (context) => const ProfilScreen(),
-        '/lapor': (context) => const LaporScreen(),
-        '/cek_result': (context) => const CekResultScreen(),
-        '/edukasi_detail': (context) => const EdukasiDetailScreen(),
-        '/alert_detail': (context) => const AlertDetailScreen(),
-        '/2fa_detail': (context) => const TwofaDetailScreen(),
-      },
+      home: const LoginScreen(),
     );
   }
 }

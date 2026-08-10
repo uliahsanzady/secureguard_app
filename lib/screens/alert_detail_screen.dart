@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
+import 'twofa_detail_screen.dart';
 
 class AlertDetailScreen extends StatelessWidget {
   const AlertDetailScreen({super.key});
@@ -68,7 +69,10 @@ class AlertDetailScreen extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/2fa_detail');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const TwofaDetailScreen()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.danger,
@@ -88,7 +92,14 @@ class AlertDetailScreen extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Peringatan telah disimpan'),
+                          backgroundColor: AppColors.success,
+                        ),
+                      );
+                    },
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: AppColors.primary),
                       shape: RoundedRectangleBorder(

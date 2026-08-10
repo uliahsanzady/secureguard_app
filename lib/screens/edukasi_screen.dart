@@ -3,6 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../models/data_models.dart';
+import 'dashboard_screen.dart';
+import 'cek_screen.dart';
+import 'profil_screen.dart';
+import 'edukasi_detail_screen.dart';
+import 'alert_detail_screen.dart';
 
 class EdukasiScreen extends StatefulWidget {
   const EdukasiScreen({super.key});
@@ -68,84 +73,95 @@ class _EdukasiScreenState extends State<EdukasiScreen> {
               ),
               const SizedBox(height: 16),
               // Latest Modus Section
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFFF6B35), Color(0xFFFF8A65)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AlertDetailScreen()),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFFF6B35), Color(0xFFFF8A65)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            'MODUS TERBARU',
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              'MODUS TERBARU',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 1,
+                              ),
                             ),
                           ),
+                          const Spacer(),
+                          Text(
+                            '5 min baca',
+                            style: GoogleFonts.poppins(
+                              color: Colors.white70,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'Awas Penipuan Berkedok Kurir Paket Jelang Lebaran',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const Spacer(),
-                        Text(
-                          '© 5 min baca',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white70,
-                            fontSize: 12,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Kenali ciri-ciri tautan berbahaya (APK) yang dikirimkan melalui aplikasi pesan berdalih...',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white70,
+                          fontSize: 13,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const AlertDetailScreen()),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Awas Penipuan Berkedok Kurir Paket Jelang Lebaran',
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Kenali ciri-ciri tautan berbahaya (APK) yang dikirimkan melalui aplikasi pesan berdalih...',
-                      style: GoogleFonts.poppins(
-                        color: Colors.white70,
-                        fontSize: 13,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/alert_detail');
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                        child: Text(
+                          'Pelajari Selengkapnya',
+                          style: GoogleFonts.poppins(
+                            color: AppColors.accent,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                      child: Text(
-                        'Pelajari Selengkapnya',
-                        style: GoogleFonts.poppins(
-                          color: AppColors.accent,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -170,7 +186,7 @@ class _EdukasiScreenState extends State<EdukasiScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              ..._educationItems.map((item) => _buildEducationCard(item)),
+              ..._educationItems.map((item) => _buildEducationCard(item, context)),
               const SizedBox(height: 80),
             ],
           ),
@@ -184,16 +200,25 @@ class _EdukasiScreenState extends State<EdukasiScreen> {
           });
           switch (index) {
             case 0:
-              Navigator.pushReplacementNamed(context, '/dashboard');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const DashboardScreen()),
+              );
               break;
             case 1:
-              Navigator.pushReplacementNamed(context, '/cek');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const CekScreen()),
+              );
               break;
             case 2:
-              Navigator.pushReplacementNamed(context, '/edukasi');
+              // Already on Edukasi screen
               break;
             case 3:
-              Navigator.pushReplacementNamed(context, '/profil');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilScreen()),
+              );
               break;
           }
         },
@@ -230,7 +255,7 @@ class _EdukasiScreenState extends State<EdukasiScreen> {
     );
   }
 
-  Widget _buildEducationCard(EducationItem item) {
+  Widget _buildEducationCard(EducationItem item, BuildContext context) {
     Color categoryColor;
     switch (item.category) {
       case 'Modus Terbaru':
@@ -248,7 +273,13 @@ class _EdukasiScreenState extends State<EdukasiScreen> {
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/edukasi_detail', arguments: item);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const EdukasiDetailScreen(),
+            settings: RouteSettings(arguments: item),
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),

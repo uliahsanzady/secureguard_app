@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
+import 'dashboard_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -118,7 +119,10 @@ class LoginScreen extends StatelessWidget {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/dashboard');
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const DashboardScreen()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
@@ -208,7 +212,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      '🔒 Enkripsi End-to-End Aktif',
+                      'Enkripsi End-to-End Aktif',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         color: AppColors.greyText,

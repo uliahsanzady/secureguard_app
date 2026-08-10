@@ -3,6 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../models/data_models.dart';
+import 'dashboard_screen.dart';
+import 'edukasi_screen.dart';
+import 'profil_screen.dart';
+import 'cek_result_screen.dart';
 
 class CekScreen extends StatefulWidget {
   const CekScreen({super.key});
@@ -118,10 +122,12 @@ class _CekScreenState extends State<CekScreen> {
                     suffixIcon: IconButton(
                       onPressed: () {
                         if (_searchController.text.isNotEmpty) {
-                          Navigator.pushNamed(
+                          Navigator.push(
                             context,
-                            '/cek_result',
-                            arguments: _searchController.text,
+                            MaterialPageRoute(
+                              builder: (context) => const CekResultScreen(),
+                              settings: RouteSettings(arguments: _searchController.text),
+                            ),
                           );
                         }
                       },
@@ -138,10 +144,12 @@ class _CekScreenState extends State<CekScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_searchController.text.isNotEmpty) {
-                      Navigator.pushNamed(
+                      Navigator.push(
                         context,
-                        '/cek_result',
-                        arguments: _searchController.text,
+                        MaterialPageRoute(
+                          builder: (context) => const CekResultScreen(),
+                          settings: RouteSettings(arguments: _searchController.text),
+                        ),
                       );
                     }
                   },
@@ -228,16 +236,25 @@ class _CekScreenState extends State<CekScreen> {
           });
           switch (index) {
             case 0:
-              Navigator.pushReplacementNamed(context, '/dashboard');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const DashboardScreen()),
+              );
               break;
             case 1:
-              Navigator.pushReplacementNamed(context, '/cek');
+              // Already on Cek screen
               break;
             case 2:
-              Navigator.pushReplacementNamed(context, '/edukasi');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const EdukasiScreen()),
+              );
               break;
             case 3:
-              Navigator.pushReplacementNamed(context, '/profil');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilScreen()),
+              );
               break;
           }
         },

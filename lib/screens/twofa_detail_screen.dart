@@ -226,7 +226,10 @@ class TwofaDetailScreen extends StatelessWidget {
   Widget _buildRelatedArticle(BuildContext context, String title, String time) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/edukasi_detail');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const EdukasiDetailScreen()),
+        );
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),

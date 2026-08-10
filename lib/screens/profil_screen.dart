@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
 import '../widgets/bottom_nav_bar.dart';
+import 'dashboard_screen.dart';
+import 'cek_screen.dart';
+import 'edukasi_screen.dart';
+import 'login_screen.dart';
 
 class ProfilScreen extends StatefulWidget {
   const ProfilScreen({super.key});
@@ -95,7 +99,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
                 items: [
                   _buildMenuItem('Pusat Bantuan & FAQ', Icons.help_outline),
                   _buildMenuItem('Tentang SecureGuard', Icons.info_outline),
-                  _buildMenuItem('Keluar', Icons.logout_outlined, isDanger: true),
+                  _buildMenuItem('Keluar', Icons.logout_outlined, isDanger: true, context: context),
                 ],
               ),
               const SizedBox(height: 80),
@@ -111,16 +115,25 @@ class _ProfilScreenState extends State<ProfilScreen> {
           });
           switch (index) {
             case 0:
-              Navigator.pushReplacementNamed(context, '/dashboard');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const DashboardScreen()),
+              );
               break;
             case 1:
-              Navigator.pushReplacementNamed(context, '/cek');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const CekScreen()),
+              );
               break;
             case 2:
-              Navigator.pushReplacementNamed(context, '/edukasi');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const EdukasiScreen()),
+              );
               break;
             case 3:
-              Navigator.pushReplacementNamed(context, '/profil');
+              // Already on Profil screen
               break;
           }
         },
@@ -176,6 +189,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
     String? subtitle,
     bool isSecurity = false,
     bool isDanger = false,
+    BuildContext? context,
   }) {
     return ListTile(
       leading: Icon(
@@ -227,7 +241,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
         ],
       ),
       onTap: () {
-        if (isDanger) {
+        if (isDanger && context != null) {
           _showLogoutDialog(context);
         }
       },
@@ -248,10 +262,9 @@ class _ProfilScreenState extends State<ProfilScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              Navigator.pushNamedAndRemoveUntil(
+              Navigator.pushReplacement(
                 context,
-                '/login',
-                (route) => false,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
             child: const Text(
