@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../utils/app_colors.dart';
+import '../utils/language_provider.dart';
+import '../l10n/app_localizations.dart';
 import 'dashboard_screen.dart';
 import 'signup_screen.dart';
 
@@ -9,6 +12,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -18,7 +23,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 40),
               Text(
-                'SecureGuard',
+                localizations.translate('app_name'),
                 style: GoogleFonts.poppins(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -26,7 +31,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                'Digital Fraud Prevention',
+                localizations.translate('app_subtitle'),
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: AppColors.greyText,
@@ -34,7 +39,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               Text(
-                'Masuk ke Akun',
+                localizations.translate('login_title'),
                 style: GoogleFonts.poppins(
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
@@ -43,7 +48,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Amankan transaksi finansial Anda',
+                localizations.translate('login_subtitle'),
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: AppColors.greyText,
@@ -51,7 +56,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                'Email atau Nomor Telepon',
+                localizations.translate('email_phone'),
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -74,7 +79,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'Kata Sandi',
+                localizations.translate('password'),
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -103,7 +108,7 @@ class LoginScreen extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {},
                   child: Text(
-                    'Lupa Kata Sandi?',
+                    localizations.translate('forgot_password'),
                     style: GoogleFonts.poppins(
                       color: AppColors.primary,
                       fontSize: 13,
@@ -129,7 +134,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Masuk ke SecureGuard →',
+                    localizations.translate('login_button'),
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -145,7 +150,7 @@ class LoginScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'ATAU MASUK DENGAN',
+                      localizations.translate('or_login_with'),
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         color: AppColors.greyText,
@@ -169,7 +174,7 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Center(
                 child: Text(
-                  'Biometrik',
+                  localizations.translate('biometric'),
                   style: GoogleFonts.poppins(
                     fontSize: 13,
                     color: AppColors.greyText,
@@ -181,7 +186,7 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Belum punya akun?',
+                    localizations.translate('no_account'),
                     style: GoogleFonts.poppins(
                       color: AppColors.greyText,
                     ),
@@ -194,7 +199,7 @@ class LoginScreen extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      'Daftar Sekarang',
+                      localizations.translate('register'),
                       style: GoogleFonts.poppins(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
@@ -215,7 +220,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Enkripsi End-to-End Aktif',
+                      localizations.translate('encryption_active'),
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         color: AppColors.greyText,

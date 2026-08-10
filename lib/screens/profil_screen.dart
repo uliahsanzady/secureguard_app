@@ -8,12 +8,9 @@ import 'edukasi_screen.dart';
 import 'login_screen.dart';
 import 'edit_profil_screen.dart';
 import 'keamanan_akun_screen.dart';
-import 'perangkat_tertaut_screen.dart';
 import 'riwayat_laporan_screen.dart';
 import 'favorit_edukasi_screen.dart';
 import 'notifikasi_screen.dart';
-import 'bahasa_screen.dart';
-import 'mode_gelap_screen.dart';
 import 'bantuan_screen.dart';
 import 'tentang_screen.dart';
 
@@ -139,17 +136,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
                       );
                     },
                   ),
-                  _buildMenuItem(
-                    'Perangkat Tertaut',
-                    Icons.devices_outlined,
-                    subtitle: '2 aktif',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PerangkatTertautScreen()),
-                      );
-                    },
-                  ),
                 ],
               ),
 
@@ -189,27 +175,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => NotifikasiScreen()),
-                      );
-                    },
-                  ),
-                  _buildMenuItem(
-                    'Bahasa',
-                    Icons.language_outlined,
-                    subtitle: 'ID >',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => BahasaScreen()),
-                      );
-                    },
-                  ),
-                  _buildMenuItem(
-                    'Mode Gelap',
-                    Icons.dark_mode_outlined,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ModeGelapScreen()),
                       );
                     },
                   ),
