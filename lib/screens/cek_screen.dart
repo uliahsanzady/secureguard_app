@@ -85,7 +85,6 @@ class _CekScreenState extends State<CekScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Trusted Source Badge
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -113,7 +112,6 @@ class _CekScreenState extends State<CekScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Type Selection
               Row(
                 children: [
                   _buildTypeButton('Nomor'),
@@ -122,7 +120,6 @@ class _CekScreenState extends State<CekScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-              // Search Field
               Container(
                 decoration: BoxDecoration(
                   color: AppColors.greyLight,
@@ -154,7 +151,6 @@ class _CekScreenState extends State<CekScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Check Button
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -186,7 +182,6 @@ class _CekScreenState extends State<CekScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              // History Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -217,7 +212,6 @@ class _CekScreenState extends State<CekScreen> {
               if (_history.isNotEmpty)
                 ..._history.map((item) => _buildHistoryItem(item)),
               const SizedBox(height: 24),
-              // Popular Reports
               _buildPopularReports(),
               const SizedBox(height: 80),
             ],
@@ -320,7 +314,6 @@ class _CekScreenState extends State<CekScreen> {
     try {
       Map<String, dynamic> result;
       
-      // Panggil API sesuai jenis yang dipilih
       switch (_selectedType) {
         case 'Rekening':
           result = await ApiService.cekRekening(query);
@@ -337,7 +330,6 @@ class _CekScreenState extends State<CekScreen> {
         _isLoading = false;
       });
 
-      // Tambahkan ke riwayat
       setState(() {
         _history.insert(0, SearchHistory(
           query: query,
@@ -347,7 +339,6 @@ class _CekScreenState extends State<CekScreen> {
         ));
       });
 
-      // Navigasi ke hasil
       Navigator.push(
         context,
         MaterialPageRoute(

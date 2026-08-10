@@ -50,7 +50,6 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              // Email Field
               Text(
                 'Email atau Nomor Telepon',
                 style: GoogleFonts.poppins(
@@ -74,7 +73,6 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              // Password Field
               Text(
                 'Kata Sandi',
                 style: GoogleFonts.poppins(
@@ -114,7 +112,6 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              // Login Button
               SizedBox(
                 width: double.infinity,
                 height: 56,

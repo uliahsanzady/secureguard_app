@@ -43,7 +43,6 @@ class BantuanScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Search Bar
           Padding(
             padding: const EdgeInsets.all(16),
             child: Container(
@@ -58,9 +57,7 @@ class BantuanScreen extends StatelessWidget {
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   prefixIcon: const Icon(Icons.search, color: AppColors.greyText),
                 ),
-                onChanged: (value) {
-                  // Implement search functionality
-                },
+                onChanged: (value) {},
               ),
             ),
           ),

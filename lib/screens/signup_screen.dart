@@ -37,7 +37,6 @@ class _SignupScreenState extends State<SignupScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                // Back Button
                 IconButton(
                   onPressed: () {
                     Navigator.pushReplacement(
@@ -54,7 +53,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Logo/Title
                 Text(
                   'SecureGuard',
                   style: GoogleFonts.poppins(
@@ -88,7 +86,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                // Name Field
                 Text(
                   'Nama Lengkap',
                   style: GoogleFonts.poppins(
@@ -123,7 +120,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Email Field
                 Text(
                   'Email',
                   style: GoogleFonts.poppins(
@@ -158,7 +154,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Phone Field
                 Text(
                   'Nomor Telepon',
                   style: GoogleFonts.poppins(
@@ -194,7 +189,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Password Field
                 Text(
                   'Kata Sandi',
                   style: GoogleFonts.poppins(
@@ -241,7 +235,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Confirm Password Field
                 Text(
                   'Konfirmasi Kata Sandi',
                   style: GoogleFonts.poppins(
@@ -288,7 +281,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Terms & Conditions
                 Row(
                   children: [
                     SizedBox(
@@ -320,7 +312,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                // Sign Up Button
                 SizedBox(
                   width: double.infinity,
                   height: 56,
@@ -424,13 +415,11 @@ class _SignupScreenState extends State<SignupScreen> {
         _isLoading = true;
       });
 
-      // Simulasi proses registrasi
       Future.delayed(const Duration(seconds: 2), () {
         setState(() {
           _isLoading = false;
         });
 
-        // Tampilkan pesan sukses
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('🎉 Pendaftaran berhasil! Selamat datang di SecureGuard'),
@@ -439,7 +428,6 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         );
 
-        // Navigasi ke Dashboard
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => DashboardScreen()),

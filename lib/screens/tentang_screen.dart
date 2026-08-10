@@ -2,38 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
 
-class BantuanScreen extends StatelessWidget {
-  const BantuanScreen({super.key});
-
-  final List<Map<String, dynamic>> faqs = const [
-    {
-      'question': 'Bagaimana cara mengecek rekening?',
-      'answer': 'Buka menu "Cek" di bottom navigation, pilih jenis "Rekening", lalu masukkan nomor rekening yang ingin dicek.',
-    },
-    {
-      'question': 'Apa itu modus APK?',
-      'answer': 'Modus APK adalah penipuan dengan mengirimkan file APK berkedok aplikasi resmi untuk mencuri data pengguna.',
-    },
-    {
-      'question': 'Bagaimana cara melaporkan penipuan?',
-      'answer': 'Klik tombol "Lapor Penipuan" di halaman Dashboard, isi formulir lengkap, lalu kirim laporan.',
-    },
-    {
-      'question': 'Apa itu autentikasi 2FA?',
-      'answer': '2FA adalah lapisan keamanan tambahan yang memerlukan verifikasi dua langkah saat login.',
-    },
-    {
-      'question': 'Apakah data saya aman di SecureGuard?',
-      'answer': 'Ya, semua data dienkripsi end-to-end dan tidak dibagikan ke pihak ketiga tanpa izin.',
-    },
-  ];
+class TentangScreen extends StatelessWidget {
+  const TentangScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Pusat Bantuan & FAQ',
+          'Tentang SecureGuard',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
           ),
@@ -41,76 +18,147 @@ class BantuanScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          // Search Bar
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Container(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.shield,
+                size: 60,
+                color: AppColors.primary,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'SecureGuard',
+              style: GoogleFonts.poppins(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primary,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Digital Fraud Prevention',
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: AppColors.greyText,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Version 1.0.0',
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                color: AppColors.greyText,
+              ),
+            ),
+            const SizedBox(height: 32),
+            const Divider(),
+            const SizedBox(height: 16),
+
+            _buildInfoItem(
+              'Tentang Aplikasi',
+              'SecureGuard adalah aplikasi pencegahan penipuan digital yang membantu Anda memeriksa kredibilitas nomor, rekening, dan tautan sebelum bertransaksi.',
+            ),
+            const SizedBox(height: 16),
+            _buildInfoItem(
+              'Fitur Utama',
+              '• Cek Kredibilitas (Nomor, Rekening, Tautan)\n• Scanner Pesan dengan deteksi penipuan\n• Pusat Edukasi & Modus Terbaru\n• Lapor Penipuan Cepat\n• Notifikasi Peringatan Keamanan',
+            ),
+            const SizedBox(height: 16),
+            _buildInfoItem(
+              'Sumber Data',
+              '• CekRekening.id (Kominfo)\n• Google Safe Browsing\n• Database Laporan Komunitas',
+            ),
+            const SizedBox(height: 16),
+            _buildInfoItem(
+              'Kontak',
+              'Email: support@secureguard.id\nTelepon: 021-1234-5678',
+            ),
+            const SizedBox(height: 24),
+            Container(
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppColors.greyLight,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Cari pertanyaan...',
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  prefixIcon: const Icon(Icons.search, color: AppColors.greyText),
-                ),
-                onChanged: (value) {
-                  // Implement search functionality
-                },
+              child: Column(
+                children: [
+                  const Icon(
+                    Icons.lock_outline,
+                    color: AppColors.success,
+                    size: 24,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '🔒 Enkripsi End-to-End Aktif',
+                    style: GoogleFonts.poppins(
+                      fontSize: 13,
+                      color: AppColors.greyDark,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Data Anda aman dan terlindungi',
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      color: AppColors.greyText,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: faqs.length,
-              itemBuilder: (context, index) {
-                final faq = faqs[index];
-                return _buildFaqItem(faq, context);
-              },
+            const SizedBox(height: 32),
+            Text(
+              '© 2024 SecureGuard. All rights reserved.',
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                color: AppColors.greyText,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildFaqItem(Map<String, dynamic> faq, BuildContext context) {
+  Widget _buildInfoItem(String title, String content) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.greyMedium),
       ),
-      child: Theme(
-        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-        child: ExpansionTile(
-          title: Text(
-            faq['question'],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
             style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w500,
-              fontSize: 14,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: AppColors.primary,
             ),
           ),
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                faq['answer'],
-                style: GoogleFonts.poppins(
-                  fontSize: 13,
-                  color: AppColors.greyDark,
-                  height: 1.5,
-                ),
-              ),
+          const SizedBox(height: 8),
+          Text(
+            content,
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              color: AppColors.greyDark,
+              height: 1.6,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

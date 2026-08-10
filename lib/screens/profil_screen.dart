@@ -1,275 +1,420 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_colors.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import '../widgets/bottom_nav_bar.dart';
+import 'dashboard_screen.dart';
+import 'cek_screen.dart';
+import 'edukasi_screen.dart';
+import 'login_screen.dart';
+import 'edit_profil_screen.dart';
+import 'keamanan_akun_screen.dart';
+import 'perangkat_tertaut_screen.dart';
+import 'riwayat_laporan_screen.dart';
+import 'favorit_edukasi_screen.dart';
+import 'notifikasi_screen.dart';
+import 'bahasa_screen.dart';
+import 'mode_gelap_screen.dart';
+import 'bantuan_screen.dart';
+import 'tentang_screen.dart';
 
-class EditProfilScreen extends StatefulWidget {
-  final String name;
-  final String email;
-  final String phone;
-
-  const EditProfilScreen({
-    super.key,
-    required this.name,
-    required this.email,
-    required this.phone,
-  });
+class ProfilScreen extends StatefulWidget {
+  const ProfilScreen({super.key});
 
   @override
-  State<EditProfilScreen> createState() => _EditProfilScreenState();
+  State<ProfilScreen> createState() => _ProfilScreenState();
 }
 
-class _EditProfilScreenState extends State<EditProfilScreen> {
-  late TextEditingController _nameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneController;
-  File? _profileImage;
-  bool _isLoading = false;
+class _ProfilScreenState extends State<ProfilScreen> {
+  int _currentIndex = 3;
 
-  @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController(text: widget.name);
-    _emailController = TextEditingController(text: widget.email);
-    _phoneController = TextEditingController(text: widget.phone);
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _profileImage = File(pickedFile.path);
-      });
-    }
-  }
-
-  void _saveProfile() {
-    if (_nameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Nama tidak boleh kosong'),
-          backgroundColor: AppColors.warning,
-        ),
-      );
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    Future.delayed(const Duration(seconds: 1), () {
-      setState(() {
-        _isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('✅ Profil berhasil diperbarui'),
-          backgroundColor: AppColors.success,
-        ),
-      );
-      Navigator.pop(context, {
-        'name': _nameController.text,
-        'email': _emailController.text,
-        'phone': _phoneController.text,
-      });
-    });
-  }
+  String userName = 'Budi Santoso';
+  String userEmail = 'budi.santoso@email.com';
+  String userPhone = '0812 3456 7890';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Edit Profil',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            // Profile Image
-            Center(
-              child: Stack(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              Row(
                 children: [
                   CircleAvatar(
-                    radius: 50,
-                    backgroundColor: AppColors.greyLight,
-                    backgroundImage: _profileImage != null
-                        ? FileImage(_profileImage!)
-                        : null,
-                    child: _profileImage == null
-                        ? Icon(
-                            Icons.person,
-                            size: 50,
-                            color: AppColors.greyText,
-                          )
-                        : null,
+                    radius: 35,
+                    backgroundColor: AppColors.primary.withOpacity(0.1),
+                    child: const Icon(
+                      Icons.person,
+                      size: 35,
+                      color: AppColors.primary,
+                    ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: GestureDetector(
-                        onTap: _pickImage,
-                        child: const Icon(
-                          Icons.camera_alt,
-                          color: Colors.white,
-                          size: 18,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          userName,
+                          style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
+                          ),
                         ),
-                      ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: AppColors.success.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.verified,
+                                    size: 14,
+                                    color: AppColors.success,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Akun Terverifikasi',
+                                    style: GoogleFonts.poppins(
+                                      color: AppColors.success,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          userEmail,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: AppColors.greyText,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Klik ikon kamera untuk ganti foto',
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                color: AppColors.greyText,
-              ),
-            ),
-            const SizedBox(height: 32),
+              const SizedBox(height: 24),
 
-            // Name Field
-            Text(
-              'Nama Lengkap',
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.greyDark,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.greyLight,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  hintText: 'Masukkan nama lengkap',
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  prefixIcon: Icon(Icons.person_outline, color: AppColors.greyText),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Email Field
-            Text(
-              'Email',
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.greyDark,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.greyLight,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: TextField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  hintText: 'Masukkan email',
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  prefixIcon: Icon(Icons.email_outlined, color: AppColors.greyText),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Phone Field
-            Text(
-              'Nomor Telepon',
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.greyDark,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.greyLight,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: TextField(
-                controller: _phoneController,
-                keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
-                  hintText: 'Masukkan nomor telepon',
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  prefixIcon: Icon(Icons.phone_outlined, color: AppColors.greyText),
-                ),
-              ),
-            ),
-            const SizedBox(height: 32),
-
-            // Save Button
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                onPressed: _isLoading ? null : _saveProfile,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              _buildMenuSection(
+                title: 'AKUN & KEAMANAN',
+                items: [
+                  _buildMenuItem(
+                    'Edit Profil',
+                    Icons.edit_outlined,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditProfilScreen(
+                            name: userName,
+                            email: userEmail,
+                            phone: userPhone,
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                ),
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : Text(
-                        'Simpan Perubahan',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
+                  _buildMenuItem(
+                    'Keamanan Akun',
+                    Icons.security_outlined,
+                    subtitle: 'Sangat Aman',
+                    isSecurity: true,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => KeamananAkunScreen()),
+                      );
+                    },
+                  ),
+                  _buildMenuItem(
+                    'Perangkat Tertaut',
+                    Icons.devices_outlined,
+                    subtitle: '2 aktif',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PerangkatTertautScreen()),
+                      );
+                    },
+                  ),
+                ],
+              ),
+
+              _buildMenuSection(
+                title: 'AKTIVITAS SAYA',
+                items: [
+                  _buildMenuItem(
+                    'Riwayat Laporan',
+                    Icons.report_outlined,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RiwayatLaporanScreen()),
+                      );
+                    },
+                  ),
+                  _buildMenuItem(
+                    'Favorit Edukasi',
+                    Icons.favorite_outline,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FavoritEdukasiScreen()),
+                      );
+                    },
+                  ),
+                ],
+              ),
+
+              _buildMenuSection(
+                title: 'PREFERENSI',
+                items: [
+                  _buildMenuItem(
+                    'Notifikasi Peringatan',
+                    Icons.notifications_outlined,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NotifikasiScreen()),
+                      );
+                    },
+                  ),
+                  _buildMenuItem(
+                    'Bahasa',
+                    Icons.language_outlined,
+                    subtitle: 'ID >',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BahasaScreen()),
+                      );
+                    },
+                  ),
+                  _buildMenuItem(
+                    'Mode Gelap',
+                    Icons.dark_mode_outlined,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ModeGelapScreen()),
+                      );
+                    },
+                  ),
+                ],
+              ),
+
+              _buildMenuSection(
+                title: 'LAINNYA',
+                items: [
+                  _buildMenuItem(
+                    'Pusat Bantuan & FAQ',
+                    Icons.help_outline,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BantuanScreen()),
+                      );
+                    },
+                  ),
+                  _buildMenuItem(
+                    'Tentang SecureGuard',
+                    Icons.info_outline,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TentangScreen()),
+                      );
+                    },
+                  ),
+                  _buildMenuItem(
+                    'Keluar',
+                    Icons.logout_outlined,
+                    isDanger: true,
+                    onTap: () {
+                      _showLogoutDialog(context);
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 80),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => DashboardScreen()),
+              );
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => CekScreen()),
+              );
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => EdukasiScreen()),
+              );
+              break;
+            case 3:
+              break;
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildMenuSection({
+    required String title,
+    required List<Widget> items,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AppColors.greyText,
+              letterSpacing: 1,
+            ),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppColors.greyMedium),
+          ),
+          child: Column(
+            children: items.asMap().entries.map((entry) {
+              return Column(
+                children: [
+                  entry.value,
+                  if (entry.key < items.length - 1)
+                    const Divider(height: 0, color: AppColors.greyMedium),
+                ],
+              );
+            }).toList(),
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  Widget _buildMenuItem(
+    String title,
+    IconData icon, {
+    String? subtitle,
+    bool isSecurity = false,
+    bool isDanger = false,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: isDanger ? AppColors.danger : AppColors.primary,
+        size: 22,
+      ),
+      title: Text(
+        title,
+        style: GoogleFonts.poppins(
+          color: isDanger ? AppColors.danger : AppColors.black,
+          fontWeight: FontWeight.w500,
+          fontSize: 14,
+        ),
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (subtitle != null)
+            Text(
+              subtitle,
+              style: GoogleFonts.poppins(
+                color: isSecurity ? AppColors.success : AppColors.greyText,
+                fontSize: 13,
+                fontWeight: isSecurity ? FontWeight.w600 : FontWeight.normal,
               ),
             ),
-            const SizedBox(height: 24),
-          ],
-        ),
+          if (!isSecurity && !isDanger)
+            const Icon(
+              Icons.chevron_right,
+              color: AppColors.greyText,
+            ),
+          if (isSecurity)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.success.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                subtitle!,
+                style: GoogleFonts.poppins(
+                  color: AppColors.success,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+        ],
+      ),
+      onTap: onTap,
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Konfirmasi Keluar'),
+        content: const Text('Apakah Anda yakin ingin keluar dari SecureGuard?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+            child: const Text(
+              'Keluar',
+              style: TextStyle(color: AppColors.danger),
+            ),
+          ),
+        ],
       ),
     );
   }
