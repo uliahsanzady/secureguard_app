@@ -7,6 +7,7 @@ import 'edukasi_screen.dart';
 import 'profil_screen.dart';
 import 'lapor_screen.dart';
 import 'alert_detail_screen.dart';
+import 'scanner_pesan_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -49,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ProfilScreen()),
+                            MaterialPageRoute(builder: (context) => const ProfilScreen()),
                           );
                         },
                         icon: const Icon(Icons.person_outline),
@@ -137,7 +138,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CekScreen()),
+                        MaterialPageRoute(builder: (context) => const CekScreen()),
                       );
                     },
                   ),
@@ -145,7 +146,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     icon: Icons.scanner_outlined,
                     label: 'Scanner Pesan',
                     color: AppColors.accent,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ScannerPesanScreen()),
+                      );
+                    },
                   ),
                   _buildQuickAction(
                     icon: Icons.report_outlined,
@@ -154,7 +160,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LaporScreen()),
+                        MaterialPageRoute(builder: (context) => const LaporScreen()),
                       );
                     },
                   ),
@@ -175,7 +181,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => EdukasiScreen()),
+                        MaterialPageRoute(builder: (context) => const EdukasiScreen()),
                       );
                     },
                     child: Text(
@@ -194,7 +200,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AlertDetailScreen()),
+                    MaterialPageRoute(builder: (context) => const AlertDetailScreen()),
                   );
                 },
               ),
@@ -206,7 +212,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CekScreen()),
+                    MaterialPageRoute(builder: (context) => const CekScreen()),
                   );
                 },
               ),
@@ -227,19 +233,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => CekScreen()),
+                MaterialPageRoute(builder: (context) => const CekScreen()),
               );
               break;
             case 2:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => EdukasiScreen()),
+                MaterialPageRoute(builder: (context) => const EdukasiScreen()),
               );
               break;
             case 3:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => ProfilScreen()),
+                MaterialPageRoute(builder: (context) => const ProfilScreen()),
               );
               break;
           }
